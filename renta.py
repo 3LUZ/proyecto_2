@@ -7,26 +7,29 @@ st.header("Predecir el precio de alquiler ")
 # Instrucciones para el usuario
 st.write("Ingrese las características ")
 # Front
-
 metros_cuadrados = float(st.text_input("metros cuadrados", value="16"))
 n_baños= float(st.text_input("Número de baños", value="1"))
 # Solicita al usuario que elija entre "Sí" y "No"
-tiene_ascensor = st.selectbox('¿Tiene ascensor? :',("Sí", "No"))
+tiene_ascensor = st.selectbox('¿Tiene ascensor? :',("Si", "No"))
+conversion = {"Si": 1, "No": 0}
+tiene_ascensor = conversion.get(tiene_ascensor.lower())
 # Asigna valores enteros a cada opción
-if tiene_ascensor== "Sí":
-   valor = 1
-else:
-   valor =0
-tiene_ascensor = valor
+#if tiene_ascensor== "Sí":
+   #valor = 1
+#else:
+   #valor =0
+#tiene_ascensor = valor
 n_habitaciones= int(st.text_input("Número de habitaciones", value="1"))
 # Solicita al usuario que elija entre "Sí" y "No"
-tiene_estacionamiento = st.selectbox('¿Tiene ascensor? :',("Sí", "No"))
+tiene_estacionamiento = st.selectbox('¿Tiene estacionamiento? :',("Si", "No"))
+conversion = {"Si": 1, "No": 0}
+tiene_estacionamiento = conversion.get(tiene_estacionamiento.lower())
 # Asigna valores enteros a cada opción
-if tiene_estacionamiento== "Sí":
-   valor =1
-else:
-   valor =0
-tiene_estacionamiento= valor
+#if tiene_estacionamiento== "Sí":
+   #valor =1
+#else:
+   #valor =0
+#tiene_estacionamiento= valor
  # Backend
 # Creamos el array de entrada
 X_list = [ metros_cuadrados,n_baños , tiene_ascensor, n_habitaciones, tiene_estacionamiento ]
@@ -42,8 +45,9 @@ if st.button("Predecir"):
  # Mostrar las primeras filas del DataFrame cargado
     X_scaled = scaler.transform(X)
  # Realizar predicciones con el modelo
-    predicciones = model.predict(X_scaled)
+    predicciones = model.predict(X_scaled).reshape(1,-1)
     predicciones= scaler_y.inverse_transform(predicciones)
+    y=np.round(predicciones[0],2)
  # Mostrar las predicciones
     st.write("Predicciones del precio de renta:")
-    st.write(predicciones)            
+    st.write(y)            
